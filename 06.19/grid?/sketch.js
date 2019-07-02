@@ -1,8 +1,11 @@
-const rectangles = [];
+const gridAreas = [];
+
 const cols = 6;
 const rows = 6;
+
 const gapSize = 4;
 const gap = gapSize / 2;
+
 let colSize = 0;
 let rowSize = 0;
 
@@ -24,15 +27,13 @@ function draw() {
       translate(gap + i * colSize + gap * i, gap + j * rowSize + gap * j);
       rect(0, 0, colSize, colSize);
       pop();
+
+      gridAreas.push({
+        x: gap + i * colSize + gap * i,
+        y: gap + j * rowSize + gap * j
+      });
     }
   }
-  createRect();
-}
 
-function createRect() {
-  const rect = {
-    cols: round(random(6)),
-    rows: round(random(6))
-  };
-  console.log(rect);
+  console.log(gridAreas);
 }
