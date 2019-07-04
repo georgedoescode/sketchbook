@@ -1,6 +1,6 @@
 const ngrams = {};
 
-const txt = `A spacesuit is much more than a set of clothes astronauts wear on spacewalks. A fully equipped spacesuit is really a one-person spacecraft. The formal name for the spacesuit used on the space shuttle and International Space Station is the Extravehicular Mobility Unit, or EMU. "Extravehicular" means outside of the vehicle or spacecraft. "Mobility" means that the astronaut can move around in the suit. The spacesuit protects the astronaut from the dangers of being outside in space.`;
+const txt = ``;
 
 const n = 1;
 const desiredWordLength = 4;
@@ -46,7 +46,7 @@ function draw() {
     } else break;
   }
   rectMode(CENTER);
-  finalWord += ` mk ${floor(random(5))}`;
+  finalWord += ` mk${floor(random(1, 5))}`;
   text(finalWord.toUpperCase(), width / 2, height / 2);
 }
 
