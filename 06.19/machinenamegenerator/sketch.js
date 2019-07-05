@@ -1,56 +1,87 @@
-const ngrams = {};
+let wordGenerator;
+let file;
+let t;
 
-const txt = ``;
-
-const n = 1;
-const desiredWordLength = 4;
+function preload() {
+  file = loadStrings(`./assets/scifi.txt`);
+}
 
 function setup() {
   createCanvas(400, 400);
   background(250);
-  noLoop();
-}
+  frameRate(1);
 
-// Start with an arbitrary ngram
+  for (let i = 0; i < file.length; i++) {
+    t += file[i];
+  }
+
+  wordGenerator = new PseudoWordGenerator(t, 4, 2);
+}
 
 function draw() {
-  const words = txt.split(/\W+/);
-  words.forEach(w => {
-    const word = w.toLowerCase();
-    for (var i = 0; i < word.length - n; i++) {
-      // look at an ngram
-      const gram = word.substring(i, i + n);
-      // look at the next character
-      const next = word.charAt(i + n);
-      // if this is a new one, make an empty array
-      if (!ngrams.hasOwnProperty(gram)) {
-        ngrams[gram] = [];
-      }
-      // add the character as a possible outcome
-
-      ngrams[gram].push(next);
-    }
-  });
-
-  const keys = Object.keys(ngrams);
-  let curr = keys[floor(random(keys.length))];
-  let finalWord = curr;
-
-  for (var i = 0; i < desiredWordLength; i++) {
-    if (ngrams.hasOwnProperty(curr)) {
-      const possible = ngrams[curr];
-      const next = choice(possible);
-
-      finalWord += next;
-      curr = finalWord.substring(finalWord.length - 1, finalWord.length);
-    } else break;
-  }
-  rectMode(CENTER);
-  finalWord += ` mk${floor(random(1, 5))}`;
-  text(finalWord.toUpperCase(), width / 2, height / 2);
+  background(250);
+  textSize(32);
+  text(wordGenerator.run(t), width / 2, height / 2);
 }
 
-function choice(list) {
-  const i = floor(random(list.length));
-  return list[i];
+class PseudoWordGenerator {
+  constructor(input, targetLen, n) {
+    // remove special chars, casing
+    this.input = this.sanitizeInputString(input);
+    // split input into words
+    this.words = this.input.split(/\W+/);
+    this.targetLen = targetLen;
+    this.n = n;
+    this.ngrams = {};
+    this.finalWord;
+  }
+
+  sanitizeInputString(input) {
+    let i = input.replace(/[0-9]/g, "");
+    return i.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").toLowerCase();
+  }
+
+  storeNgrams() {
+    this.words.forEach(w => {
+      const word = w;
+      for (let i = 0; i < word.length - this.n; i++) {
+        const gram = word.substring(i, i + this.n);
+        const next = word.charAt(i + this.n);
+        if (!this.ngrams.hasOwnProperty(gram)) {
+          this.ngrams[gram] = [];
+        }
+        this.ngrams[gram].push(next);
+      }
+    });
+  }
+
+  generateWord() {
+    let keys = Object.keys(this.ngrams);
+    let curr = keys[floor(random(keys.length))];
+    this.finalWord = curr;
+
+    for (var i = 0; i < this.targetLen; i++) {
+      if (this.ngrams.hasOwnProperty(curr)) {
+        let possible = this.ngrams[curr];
+        let next = this.choice(possible);
+
+        this.finalWord += next;
+        curr = this.finalWord.substring(
+          this.finalWord.length - this.n,
+          this.finalWord.length
+        );
+      }
+    }
+  }
+
+  choice(list) {
+    return list[floor(random(list.length))];
+  }
+
+  run() {
+    this.storeNgrams();
+    this.generateWord();
+    this.finalWord = this.finalWord.toUpperCase();
+    return this.finalWord;
+  }
 }
