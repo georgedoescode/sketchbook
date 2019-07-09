@@ -1,7 +1,14 @@
+let font;
+
+function preload() {
+  font = loadFont(`fonts/Inconsolata-Regular.ttf`);
+}
+
 function setup() {
   createCanvas(400, 400);
   background(252);
-  frameRate(2);
+  noLoop();
+  textFont(font);
 }
 
 function draw() {
@@ -22,8 +29,8 @@ function draw() {
     // text dist
     1.175
   );
-  dial.setup();
-  dial.draw();
+
+  dial.generate();
 }
 
 class Dial {
@@ -39,9 +46,11 @@ class Dial {
     this.type = this.choice(this.types);
     this.lineIncrements = [0.25, 0.5];
     this.lineIncrement = 1;
+    this.sublineSize = random(1.25, 1.5);
     this.lineWidth = lineWidth;
     this.boldWidth = floor(random(2, 4));
     this.numberPadding = numberPadding;
+    this.minInnerRadius = (this.rad * 2) / this.sublineSize;
   }
 
   setup() {
@@ -64,16 +73,19 @@ class Dial {
 
     this.drawNumbers();
     this.drawMarkers();
+    this.drawInner();
   }
 
   drawNumbers() {
     for (let i = 0; i <= this.numPoints; i++) {
       const { x, y } = this.calcCircVals(i);
+      textSize(14);
       text(i, x * this.numberPadding, y * this.numberPadding);
     }
   }
 
   drawMarkers() {
+    const fillIfCircles = random() > 0.5;
     for (let i = 0; i <= this.numPoints; i += this.lineIncrement) {
       const { x, y } = this.calcCircVals(i);
       if (i % 1 !== 0) {
@@ -82,11 +94,19 @@ class Dial {
         strokeWeight(this.boldWidth);
       }
       if (this.type !== `dots` && this.type !== `triangles`) {
-        line(x * this.lineWidth, y * this.lineWidth, x, y);
+        if (i % 1 !== 0) {
+          line(x * this.lineWidth, y * this.lineWidth, x, y);
+        } else {
+          line(x * this.lineWidth, y * this.lineWidth, x, y);
+        }
       }
       if (this.type === `dots`) {
         strokeWeight(1);
-        fill(50);
+        if (fillIfCircles) {
+          fill(50);
+        } else {
+          noFill();
+        }
         if (i % 1 !== 0) {
           ellipse(x, y, 2, 2);
         } else {
@@ -96,6 +116,25 @@ class Dial {
       if (this.type === `triangles`) {
       }
     }
+  }
+
+  drawInner() {
+    strokeWeight(2);
+    noFill();
+    beginShape();
+
+    let innerMult = 1;
+
+    if (this.type === `dots`) {
+      innerMult = 0.9;
+    }
+    for (let i = 0; i <= this.numPoints; i += 0.1) {
+      const val = map(i, 0, this.numPoints, 0, TWO_PI);
+      const x = cos(val) * this.rad * (this.lineWidth * innerMult);
+      const y = sin(val) * this.rad * (this.lineWidth * innerMult);
+      vertex(x, y);
+    }
+    endShape(CLOSE);
   }
 
   calcCircVals(i) {
@@ -110,5 +149,12 @@ class Dial {
   choice(list) {
     const i = floor(random(list.length));
     return list[i];
+  }
+
+  generate() {
+    push();
+    this.setup();
+    this.draw();
+    pop();
   }
 }
