@@ -1,5 +1,5 @@
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(500, 500);
   background(252);
   noLoop();
 }
@@ -10,6 +10,6 @@ function draw() {
   drawDial({
     x: width / 2,
     y: height / 2,
-    radius: 150
+    radius: 100
   });
 }

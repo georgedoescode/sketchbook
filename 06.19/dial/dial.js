@@ -26,8 +26,8 @@ function drawDial(args) {
   // whole half or quater
   const pointIncrement = helpers.choice([1, 0.5, 0.25]);
   // choose what shape to draw for the main and sub dial points
-  const primaryChoice = floor(random(0, 3));
-  const secondaryChoice = floor(random(0, 3));
+  const primaryChoice = floor(random(0, 4));
+  const secondaryChoice = floor(random(0, 4));
 
   const ellipseSizePrimary = random(4, 8);
   const ellipseSizeSecondary = ellipseSizePrimary * random(0.5, 1);
@@ -35,15 +35,16 @@ function drawDial(args) {
   const markerDepthPrimray = random(24, 48);
   const markerDepthSecondary = markerDepthPrimray * random(0.5, 1);
 
-  const markerWidthPrimary = random(4, 8);
+  const markerWidthPrimary = random(4, 6);
   const markerWidthSecondary = markerWidthPrimary * random(0.5, 1);
 
   const fillPrimary = random() > 0.5;
   const fillSecondary = !fillPrimary;
 
+  const lineDivider = 1.125;
+
   const drawDot = (x, y, radius, shouldFill) => {
     push();
-    // to fill or not to fill?
     noFill();
     if (shouldFill) fill(0);
     ellipse(x, y, radius);
@@ -55,7 +56,6 @@ function drawDial(args) {
     let a = atan2(y, x) - HALF_PI;
     translate(x, y);
     rotate(a);
-    // to fill or not to fill?
     noFill();
     if (shouldFill) fill(0);
     rect(-width / 2, width / 2, width, height);
@@ -67,15 +67,18 @@ function drawDial(args) {
     let a = atan2(y, x) - HALF_PI;
     translate(x, y);
     rotate(a);
-    // to fill or not to fill?
     noFill();
     if (shouldFill) fill(0);
     helpers.triangleSimple(-width / 2, width / 2, width, height);
     pop();
   };
 
+  const drawLine = (x, y) => {
+    line(x, y, x / lineDivider, y / lineDivider);
+  };
+
   // return evenly spaced points around a circle, accounting of our 'offset' at the bottom, starting from 6 oClock (+ HALF_PI)
-  const calcMappedCirclePos = (pointIndex, numPoints) => {
+  const calcMappedCirclePos = pointIndex => {
     const val =
       map(pointIndex, 0, numPoints, PIOffset, TWO_PI - PIOffset) + HALF_PI;
     return {
@@ -84,18 +87,18 @@ function drawDial(args) {
     };
   };
 
-  const render = (originX, originY, radius, numPoints, pointIncrement) => {
+  const render = () => {
     // translate to desired coords
     translate(originX, originY);
 
     for (let i = 0; i <= numPoints; i += pointIncrement) {
-      let { x, y } = calcMappedCirclePos(i, numPoints);
+      let { x, y } = calcMappedCirclePos(i);
       x *= radius;
       y *= radius;
       // draw 'main' markers
       if (i % 1 === 0) {
         textAlign(CENTER);
-        text(i, x * 1.125, y * 1.125);
+        text(i, x * 1.2, y * 1.2);
         switch (primaryChoice) {
           case 1:
             drawTriangle(
@@ -114,6 +117,9 @@ function drawDial(args) {
               -markerDepthPrimray,
               fillPrimary
             );
+            break;
+          case 3:
+            drawLine(x, y, markerDepthPrimray);
             break;
           default:
             drawDot(x, y, ellipseSizePrimary, fillPrimary);
@@ -139,6 +145,9 @@ function drawDial(args) {
               -markerDepthSecondary,
               fillSecondary
             );
+            break;
+          case 3:
+            drawLine(x, y, markerDepthSecondary);
             break;
           default:
             drawDot(x, y, ellipseSizeSecondary, fillSecondary);
