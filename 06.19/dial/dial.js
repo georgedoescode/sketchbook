@@ -25,17 +25,53 @@ function drawDial(args) {
   const numPoints = helpers.randomEvenNumber(minPoints, maxPoints);
   // whole half or quater
   const pointIncrement = helpers.choice([1, 0.5, 0.25]);
+  // choose what shape to draw for the main and sub dial points
+  const primaryChoice = floor(random(0, 3));
+  const secondaryChoice = floor(random(0, 3));
 
-  const drawDot = (x, y, radius) => {
+  const ellipseSizePrimary = random(4, 8);
+  const ellipseSizeSecondary = ellipseSizePrimary * random(0.5, 1);
+
+  const markerDepthPrimray = random(24, 48);
+  const markerDepthSecondary = markerDepthPrimray * random(0.5, 1);
+
+  const markerWidthPrimary = random(4, 8);
+  const markerWidthSecondary = markerWidthPrimary * random(0.5, 1);
+
+  const fillPrimary = random() > 0.5;
+  const fillSecondary = !fillPrimary;
+
+  const drawDot = (x, y, radius, shouldFill) => {
+    push();
+    // to fill or not to fill?
+    noFill();
+    if (shouldFill) fill(0);
     ellipse(x, y, radius);
+    pop();
   };
 
-  const drawRect = (x, y, width, height) => {
-    rect(x, y, width, height);
+  const drawRect = (x, y, width, height, shouldFill) => {
+    push();
+    let a = atan2(y, x) - HALF_PI;
+    translate(x, y);
+    rotate(a);
+    // to fill or not to fill?
+    noFill();
+    if (shouldFill) fill(0);
+    rect(-width / 2, width / 2, width, height);
+    pop();
   };
 
-  const drawTriangle = (x, y, width, height) => {
-    helpers.triangleSimple(x, y, width, height);
+  const drawTriangle = (x, y, width, height, shouldFill) => {
+    push();
+    let a = atan2(y, x) - HALF_PI;
+    translate(x, y);
+    rotate(a);
+    // to fill or not to fill?
+    noFill();
+    if (shouldFill) fill(0);
+    helpers.triangleSimple(-width / 2, width / 2, width, height);
+    pop();
   };
 
   // return evenly spaced points around a circle, accounting of our 'offset' at the bottom, starting from 6 oClock (+ HALF_PI)
@@ -56,12 +92,59 @@ function drawDial(args) {
       let { x, y } = calcMappedCirclePos(i, numPoints);
       x *= radius;
       y *= radius;
-      push();
-      // do the ting
-      let a = atan2(y, x) - HALF_PI;
-      translate(x, y);
-      rotate(a);
-      pop();
+      // draw 'main' markers
+      if (i % 1 === 0) {
+        textAlign(CENTER);
+        text(i, x * 1.125, y * 1.125);
+        switch (primaryChoice) {
+          case 1:
+            drawTriangle(
+              x,
+              y,
+              markerWidthPrimary,
+              -markerDepthPrimray,
+              fillPrimary
+            );
+            break;
+          case 2:
+            drawRect(
+              x,
+              y,
+              markerWidthPrimary,
+              -markerDepthPrimray,
+              fillPrimary
+            );
+            break;
+          default:
+            drawDot(x, y, ellipseSizePrimary, fillPrimary);
+            break;
+        }
+      } else {
+        // draw 'sub' markers
+        switch (secondaryChoice) {
+          case 1:
+            drawTriangle(
+              x,
+              y,
+              markerWidthSecondary,
+              -markerDepthSecondary,
+              fillSecondary
+            );
+            break;
+          case 2:
+            drawRect(
+              x,
+              y,
+              markerWidthSecondary,
+              -markerDepthSecondary,
+              fillSecondary
+            );
+            break;
+          default:
+            drawDot(x, y, ellipseSizeSecondary, fillSecondary);
+            break;
+        }
+      }
     }
   };
 

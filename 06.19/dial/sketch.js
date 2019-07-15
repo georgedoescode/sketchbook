@@ -10,6 +10,6 @@ function draw() {
   drawDial({
     x: width / 2,
     y: height / 2,
-    radius: 100
+    radius: 150
   });
 }
