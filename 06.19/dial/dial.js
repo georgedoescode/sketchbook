@@ -21,7 +21,7 @@ function drawDial(args) {
   const { x: originX, y: originY, radius } = args;
   const minPoints = 4;
   const maxPoints = 16;
-  const PIOffset = PI / floor(random(4, 6));
+  const PIOffset = PI / random(4, 5);
   const numPoints = helpers.randomEvenNumber(minPoints, maxPoints);
   // whole half or quater
   const pointIncrement = helpers.choice([1, 0.5, 0.25]);
