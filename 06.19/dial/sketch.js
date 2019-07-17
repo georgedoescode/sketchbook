@@ -1,4 +1,5 @@
 let font;
+let texture;
 
 function preload() {
   font = loadFont("fonts/B612Mono-Regular.ttf");
@@ -12,7 +13,8 @@ function setup() {
 
 function draw() {
   background(252);
-  textFont(font);
+
+  // textFont(font);
 
   // draw the dial!
   drawDial({
