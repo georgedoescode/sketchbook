@@ -10,7 +10,15 @@ class Grid {
   }
 
   generate() {
-    this.subrect = new SubRect(0, 0, width, height, 0, this.limit, this.areas);
+    this.subrect = new SubRect(
+      this.x,
+      this.y,
+      this.w,
+      this.h,
+      0,
+      this.limit,
+      this.areas
+    );
     return this.areas;
   }
 }

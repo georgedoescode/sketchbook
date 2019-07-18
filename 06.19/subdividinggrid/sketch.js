@@ -8,7 +8,7 @@ function setup() {
   textAlign(CENTER);
 
   // x, y, w, h, limit
-  grid = new Grid(0, 0, width, height, 4);
+  grid = new Grid(0, 0, width, height, 3);
   gridAreas = grid.generate();
 }
 
@@ -20,6 +20,5 @@ function draw() {
     noFill();
     rect(x, y, w, h);
     fill(0);
-    ellipse(x + w / 2, y + h / 2, 5, 5);
   });
 }
