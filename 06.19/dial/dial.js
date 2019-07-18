@@ -26,6 +26,12 @@ function drawDial(args) {
         );
       }
       return result;
+    },
+    randomSymbol: () => {
+      const symbols = `∐∑−∓∅+∆∇⋈⋌⋍⋎⋏⊔⊕⊖⊗⊘⊙`;
+      const symbolsLength = symbols.length;
+      const symbol = symbols.charAt(floor(random(symbolsLength)));
+      return symbol;
     }
   };
 
@@ -33,7 +39,7 @@ function drawDial(args) {
   const { x: originX, y: originY, radius } = args;
 
   const minPoints = 2;
-  const maxPoints = 10;
+  const maxPoints = 12;
   const PIOffset = PI / random(4, 5);
   const numPoints = helpers.randomEvenNumber(minPoints, maxPoints);
 
@@ -72,10 +78,18 @@ function drawDial(args) {
 
   const dialAcronymLength = floor(random(2, 4));
 
+  let symbol = "";
+
+  if (random(0, 1) > 0.5) {
+    symbol = helpers.randomSymbol();
+  }
+
+  const fillColor = color(25, 0, 0);
+
   const drawDot = (x, y, radius, shouldFill) => {
     push();
     noFill();
-    if (shouldFill) fill(0);
+    if (shouldFill) fill(fillColor);
     ellipse(x, y, radius);
     pop();
   };
@@ -86,7 +100,7 @@ function drawDial(args) {
     translate(x, y);
     rotate(a);
     noFill();
-    if (shouldFill) fill(0);
+    if (shouldFill) fill(fillColor);
     rect(-width / 2, 0, width, height);
     pop();
   };
@@ -97,7 +111,7 @@ function drawDial(args) {
     translate(x, y);
     rotate(a);
     noFill();
-    if (shouldFill) fill(0);
+    if (shouldFill) fill(fillColor);
     helpers.triangleSimple(-width / 2, 0, width, height);
     pop();
   };
@@ -109,7 +123,7 @@ function drawDial(args) {
   const drawMarker = (x, y) => {
     push();
     // draw the inner circle
-    fill(0);
+    fill(fillColor);
     ellipse(0, 0, radius, radius);
     let a = atan2(y, x) - HALF_PI;
     if (random() > 0.5) {
@@ -167,9 +181,9 @@ function drawDial(args) {
       if (i % 1 === 0) {
         if (drawNums) {
           if (isOdd) {
-            text(i + 1, x * textDist, y * textDist);
+            text(i + 1 + " " + symbol, x * textDist, y * textDist);
           } else {
-            text(i, x * textDist, y * textDist);
+            text(i + " " + symbol, x * textDist, y * textDist);
           }
         } else {
           text(
