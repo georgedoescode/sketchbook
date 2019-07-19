@@ -5,20 +5,24 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   noLoop();
 
-  textAlign(CENTER);
-
   // x, y, w, h, limit
-  grid = new Grid(0, 0, width, height, 3);
+  grid = new Grid({
+    x: 0,
+    y: 0,
+    w: width,
+    h: height,
+    minWidth: 150,
+    minHeight: 150,
+    gap: 8,
+    limit: 4
+  });
   gridAreas = grid.generate();
 }
 
 function draw() {
   background(250);
-
-  gridAreas.map(area => {
+  gridAreas.map((area, index) => {
     const { x, y, w, h } = area;
-    noFill();
     rect(x, y, w, h);
-    fill(0);
   });
 }
