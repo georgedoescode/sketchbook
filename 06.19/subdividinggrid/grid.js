@@ -157,3 +157,19 @@ class SubRect {
     );
   }
 }
+
+function createGrid(args) {
+  const { x, y, w, h, minWidth, minHeight, gap, limit } = args;
+  const grid = new Grid({
+    x,
+    y,
+    w,
+    h,
+    minWidth,
+    minHeight,
+    gap,
+    limit
+  });
+
+  return grid.generate();
+}

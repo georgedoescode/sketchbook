@@ -1,12 +1,10 @@
-let grid;
 let gridAreas;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   noLoop();
 
-  // x, y, w, h, limit
-  grid = new Grid({
+  gridAreas = createGrid({
     x: 0,
     y: 0,
     w: width,
@@ -16,12 +14,13 @@ function setup() {
     gap: 8,
     limit: 4
   });
-  gridAreas = grid.generate();
+
+  console.log(gridAreas);
 }
 
 function draw() {
   background(250);
-  gridAreas.map((area, index) => {
+  gridAreas.map(area => {
     const { x, y, w, h } = area;
     rect(x, y, w, h);
   });
