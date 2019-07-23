@@ -20,6 +20,7 @@ function draw() {
   drawDial({
     x: width / 2,
     y: height / 2,
-    radius: 200
+    radius: min(width, height) / 2
   });
+  translate(width / 2, height / 2);
 }

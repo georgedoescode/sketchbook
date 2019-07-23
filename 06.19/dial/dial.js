@@ -36,7 +36,7 @@ function drawDial(args) {
   };
 
   // vars
-  const { x: originX, y: originY, radius } = args;
+  let { x: originX, y: originY, radius } = args;
 
   const minPoints = 2;
   const maxPoints = 12;
@@ -51,13 +51,13 @@ function drawDial(args) {
 
   // secondary shapes are always smaller than primary
 
-  const ellipseSizePrimary = random(radius / 14, radius / 10);
+  const ellipseSizePrimary = random(radius / 16, radius / 12);
   const ellipseSizeSecondary = ellipseSizePrimary * random(0.5, 1);
 
-  const markerDepthPrimary = random(radius / 4, radius / 2);
+  const markerDepthPrimary = random(radius / 6, radius / 2);
   const markerDepthSecondary = markerDepthPrimary * random(0.5, 1);
 
-  const markerWidthPrimary = random(radius / 14, radius / 10);
+  const markerWidthPrimary = random(radius / 16, radius / 12);
   const markerWidthSecondary = markerWidthPrimary * random(0.5, 1);
 
   // which has a fill color?
@@ -73,8 +73,8 @@ function drawDial(args) {
   const drawNums = random() > 0.5;
   const isOdd = random() > 0.5;
 
-  const textDist = 1.25;
-  const fontSize = radius / 7;
+  const textDist = 1.333;
+  const fontSize = radius / 8;
 
   const dialAcronymLength = floor(random(2, 4));
 
@@ -85,6 +85,9 @@ function drawDial(args) {
   }
 
   const fillColor = color(25, 0, 0);
+
+  radius /= textDist;
+  radius -= fontSize;
 
   const drawDot = (x, y, radius, shouldFill) => {
     push();
@@ -170,12 +173,13 @@ function drawDial(args) {
   const render = () => {
     // translate to desired coords
     translate(originX, originY);
-
+    strokeWeight(2);
+    if (random() > 0.75) ellipse(0, 0, radius * 2, radius * 2);
     for (let i = 0; i <= numPoints; i += pointIncrement) {
       let { x, y } = calcMappedCirclePos(i);
       x *= radius;
       y *= radius;
-      textAlign(CENTER);
+      textAlign(CENTER, CENTER);
       textSize(fontSize);
       // draw 'main' markers
       if (i % 1 === 0) {

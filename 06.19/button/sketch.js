@@ -1,14 +1,12 @@
 function setup() {
-  createCanvas(500, 500);
+  createCanvas(windowWidth, windowHeight);
   background(252);
   noLoop();
-
-  // textFont("Fira Code");
 }
 
 function draw() {
   background(252);
-  createButton(width / 2, height / 2.5, 100);
+  createButton(width / 2, height / 2, min(width, height) / 4);
 }
 
 class Button {
