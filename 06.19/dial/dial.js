@@ -40,7 +40,8 @@ function drawDial(args) {
 
   const minPoints = 2;
   const maxPoints = 12;
-  const PIOffset = PI / random(4, 5);
+  const fullCircle = random() > 0.5;
+  const PIOffset = fullCircle ? 0 : PI / random(4, 8);
   const numPoints = helpers.randomEvenNumber(minPoints, maxPoints);
 
   // whole half or quater
@@ -67,7 +68,9 @@ function drawDial(args) {
   // the size of lines
   const lineDivider = random(1.075, 1.125);
 
-  const pointMarker = floor(random(0, numPoints + 1));
+  const pointMarker = !fullCircle
+    ? floor(random(0, numPoints + 1))
+    : floor(random(numPoints));
   const markerType = floor(random(0, 3));
 
   const drawNums = random() > 0.5;
@@ -87,7 +90,6 @@ function drawDial(args) {
   const fillColor = color(25, 0, 0);
 
   radius /= textDist;
-  radius -= fontSize;
 
   const drawDot = (x, y, radius, shouldFill) => {
     push();
@@ -127,6 +129,7 @@ function drawDial(args) {
     push();
     // draw the inner circle
     fill(fillColor);
+    console.log(fillColor);
     ellipse(0, 0, radius, radius);
     let a = atan2(y, x) - HALF_PI;
     if (random() > 0.5) {
@@ -175,87 +178,91 @@ function drawDial(args) {
     translate(originX, originY);
     strokeWeight(2);
     if (random() > 0.75) ellipse(0, 0, radius * 2, radius * 2);
-    for (let i = 0; i <= numPoints; i += pointIncrement) {
-      let { x, y } = calcMappedCirclePos(i);
-      x *= radius;
-      y *= radius;
-      textAlign(CENTER, CENTER);
-      textSize(fontSize);
-      // draw 'main' markers
-      if (i % 1 === 0) {
-        if (drawNums) {
-          if (isOdd) {
-            text(i + 1 + " " + symbol, x * textDist, y * textDist);
-          } else {
-            text(i + " " + symbol, x * textDist, y * textDist);
-          }
-        } else {
-          text(
-            helpers.randomChars(dialAcronymLength),
-            x * textDist,
-            y * textDist
-          );
-        }
+    if (!fullCircle) {
+      for (let i = 0; i <= numPoints; i += pointIncrement) {
+        drawPoints(i);
+      }
+    } else {
+      for (let i = 0; i < numPoints; i += pointIncrement) {
+        drawPoints(i);
+      }
+    }
+  };
 
-        switch (primaryChoice) {
-          case 1:
-            drawTriangle(
-              x,
-              y,
-              markerWidthPrimary,
-              -markerDepthPrimary,
-              fillPrimary
-            );
-            break;
-          case 2:
-            drawRect(
-              x,
-              y,
-              markerWidthPrimary,
-              -markerDepthPrimary,
-              fillPrimary
-            );
-            break;
-          case 3:
-            drawLine(x, y, markerDepthPrimary);
-            break;
-          default:
-            drawDot(x, y, ellipseSizePrimary, fillPrimary);
-            break;
+  const drawPoints = i => {
+    let { x, y } = calcMappedCirclePos(i);
+    x *= radius;
+    y *= radius;
+    textAlign(CENTER, CENTER);
+    textSize(fontSize);
+    // draw 'main' markers
+    if (i % 1 === 0) {
+      if (drawNums) {
+        if (isOdd) {
+          text(i + 1 + " " + symbol, x * textDist, y * textDist);
+        } else {
+          text(i + " " + symbol, x * textDist, y * textDist);
         }
       } else {
-        // draw 'sub' markers
-        switch (secondaryChoice) {
-          case 1:
-            drawTriangle(
-              x,
-              y,
-              markerWidthSecondary,
-              -markerDepthSecondary,
-              fillSecondary
-            );
-            break;
-          case 2:
-            drawRect(
-              x,
-              y,
-              markerWidthSecondary,
-              -markerDepthSecondary,
-              fillSecondary
-            );
-            break;
-          case 3:
-            drawLine(x, y, markerDepthSecondary);
-            break;
-          default:
-            drawDot(x, y, ellipseSizeSecondary, fillSecondary);
-            break;
-        }
+        text(
+          helpers.randomChars(dialAcronymLength),
+          x * textDist,
+          y * textDist
+        );
       }
 
-      if (i === pointMarker) {
-        drawMarker(x, y);
+      switch (primaryChoice) {
+        case 1:
+          drawTriangle(
+            x,
+            y,
+            markerWidthPrimary,
+            -markerDepthPrimary,
+            fillPrimary
+          );
+          break;
+        case 2:
+          drawRect(x, y, markerWidthPrimary, -markerDepthPrimary, fillPrimary);
+          break;
+        case 3:
+          drawLine(x, y, markerDepthPrimary);
+          break;
+        default:
+          drawDot(x, y, ellipseSizePrimary, fillPrimary);
+          break;
       }
+    } else {
+      // draw 'sub' markers
+      switch (secondaryChoice) {
+        case 1:
+          drawTriangle(
+            x,
+            y,
+            markerWidthSecondary,
+            -markerDepthSecondary,
+            fillSecondary
+          );
+          break;
+        case 2:
+          drawRect(
+            x,
+            y,
+            markerWidthSecondary,
+            -markerDepthSecondary,
+            fillSecondary
+          );
+          break;
+        case 3:
+          drawLine(x, y, markerDepthSecondary);
+          break;
+        default:
+          drawDot(x, y, ellipseSizeSecondary, fillSecondary);
+          break;
+      }
+    }
+
+    if (i === pointMarker) {
+      drawMarker(x, y);
     }
   };
 

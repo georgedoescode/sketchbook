@@ -4,10 +4,12 @@ const rows = 10;
 let colSize = 0;
 let rowSize = 0;
 
+let pdf;
+
 function setup() {
   createCanvas(500, 500);
   background(252);
-  frameRate(1);
+  noLoop();
 
   colSize = width / cols;
   rowSize = height / rows;

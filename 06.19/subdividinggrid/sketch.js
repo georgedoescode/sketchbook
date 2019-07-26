@@ -11,7 +11,7 @@ function setup() {
     h: height,
     minWidth: 150,
     minHeight: 150,
-    gap: 8,
+    gap: 16,
     limit: 4
   });
 
