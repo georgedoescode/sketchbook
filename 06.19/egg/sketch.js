@@ -28,8 +28,8 @@ class Egg {
   draw() {
     if (this.ended) return;
     noFill();
-    stroke(50, random(175, 225));
-    strokeWeight(random(1.5, 3));
+    stroke(25, random(225, 255));
+    strokeWeight(random(2, 4));
     beginShape();
     for (var i = 0; i < TWO_PI; i += 0.125) {
       this.xoff = map(cos(i), -1, 1, 0, 0.5);
