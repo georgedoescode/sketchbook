@@ -1,5 +1,5 @@
-const cols = 10;
-const rows = 10;
+const cols = 6;
+const rows = 6;
 
 let colSize = 0;
 let rowSize = 0;
@@ -7,7 +7,7 @@ let rowSize = 0;
 let pdf;
 
 function setup() {
-  createCanvas(500, 500);
+  createCanvas(600, 600);
   background(252);
   noLoop();
 
@@ -63,8 +63,8 @@ class RandomShape {
     for (var i = this.numPoints; i > 0; i--) {
       this.point1 = this.coords[round(random(0, this.coords.length - 1))];
       this.point2 = this.coords[round(random(0, this.coords.length - 1))];
-      strokeWeight(1);
-      stroke(50, 200);
+      strokeWeight(2);
+      stroke(25, 255);
       line(this.point1.x, this.point1.y, this.point2.x, this.point2.y);
       fill(random(0, 100), random(0, 255), random(100, 150), 75);
       noStroke();

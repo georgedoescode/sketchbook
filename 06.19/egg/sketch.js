@@ -1,7 +1,7 @@
 let egg;
 
 function setup() {
-  createCanvas(500, 500);
+  createCanvas(600, 600);
   background(252);
 
   egg = new Egg();
