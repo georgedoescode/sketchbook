@@ -1,13 +1,17 @@
 function setup() {
   createCanvas(600, 600);
   background(252);
+  pixelDensity(20);
   noLoop();
 }
 
 function draw() {
+  background(250);
   for (let i = 0; i < 5; i++) {
     drawSpine(width / 2, height, i + 1);
   }
+  grain(2000);
+  save();
 }
 
 function drawSpine(x, maxHeight, order) {

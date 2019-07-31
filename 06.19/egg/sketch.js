@@ -3,13 +3,20 @@ let egg;
 function setup() {
   createCanvas(600, 600);
   background(252);
+  pixelDensity(4);
+  noLoop();
 
   egg = new Egg();
 }
 
 function draw() {
+  background(252);
+  push();
   translate(width / 2, height / 2);
   egg.draw();
+  pop();
+  grain(2000);
+  save("egg.jpg");
 }
 
 class Egg {
@@ -53,6 +60,7 @@ class Egg {
     if (this.maxRadius > 0) {
       this.step = this.step + random(-0.125, 0.125);
       this.maxRadius -= this.step;
+      this.draw();
     } else {
       this.end();
     }

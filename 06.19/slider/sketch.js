@@ -1,5 +1,5 @@
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(windowWidth, windowHeight);
   background(252);
   noLoop();
 }
@@ -29,13 +29,13 @@ class Slider {
   }
 
   setup() {
-    this.thickness = floor(random(8, 16));
+    this.thickness = floor(random(this.h / 16, this.h / 24));
     this.borderRadius = random(0, this.thickness / 2);
-    this.buttonSize = random(this.thickness * 2, this.thickness * 2.5);
+    this.buttonSize = random(this.thickness * 2.25, this.thickness * 2.75);
     this.buttonBorderRadius = random(0, this.buttonSize / 2);
     this.buttonY = random(0, this.h);
     this.numMarkerPoints = floor(random(4, 12));
-    this.markerOffset = random(8, 16);
+    this.markerOffset = random(this.h / 12, this.h / 16);
   }
 
   draw() {
@@ -74,7 +74,6 @@ class Slider {
         this.x + this.thickness * 1.5,
         this.y + this.markerOffset + i * markerDist
       );
-      console.log(i * markerDist);
     }
   }
 

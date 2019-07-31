@@ -1,5 +1,5 @@
-const cols = 6;
-const rows = 6;
+const cols = 8;
+const rows = 8;
 
 let colSize = 0;
 let rowSize = 0;
@@ -7,7 +7,7 @@ let rowSize = 0;
 let pdf;
 
 function setup() {
-  createCanvas(600, 600);
+  createCanvas(1000, 1000);
   background(252);
   noLoop();
 
@@ -15,8 +15,8 @@ function setup() {
   rowSize = height / rows;
 
   for (let x = colSize; x < width; x += colSize) {
-    for (let y = colSize; y < height; y += rowSize) {
-      const shape = new RandomShape(x, y, colSize / 4);
+    for (let y = rowSize; y < height; y += rowSize) {
+      const shape = new RandomShape(x, y, rowSize / 4);
       shape.setup();
       shape.draw();
     }
@@ -26,12 +26,14 @@ function setup() {
 function draw() {
   background(253);
   for (let x = colSize; x < width; x += colSize) {
-    for (let y = colSize; y < height; y += rowSize) {
-      const shape = new RandomShape(x, y, colSize / 4);
+    for (let y = rowSize; y < height; y += rowSize) {
+      const shape = new RandomShape(x, y, rowSize / 4);
       shape.setup();
       shape.draw();
     }
   }
+
+  grain(500);
 }
 
 class RandomShape {

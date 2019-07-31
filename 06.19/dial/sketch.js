@@ -2,7 +2,7 @@ let font;
 let texture;
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(1000, 1000);
   background(252);
   noLoop();
 }
@@ -16,5 +16,4 @@ function draw() {
     y: height / 2,
     radius: min(width, height) / 4
   });
-  translate(width / 2, height / 2);
 }
