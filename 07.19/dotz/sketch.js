@@ -1,5 +1,5 @@
-const cols = 15;
-const rows = 15;
+const cols = 21;
+const rows = 21;
 
 let colSize = 0;
 let rowSize = 0;
@@ -13,7 +13,6 @@ function setup() {
   createCanvas(1000, 1000);
   background(252);
   noLoop();
-  pixelDensity(2);
 
   colSize = width / cols;
   rowSize = height / rows;
@@ -37,19 +36,32 @@ function setup() {
 }
 
 function draw() {
-  fill(0);
+  const colors = [
+    color("#F9423A"),
+    color("#FD6800"),
+    color("#F4DA40"),
+    color("#6BC049"),
+    color("#5B87D8"),
+    color("#965EC7")
+  ];
+  const c = colors[floor(random(colors.length))];
+
   background(252);
   gridAreas.forEach(area => {
     const { xPos: x, yPos: y, w, h, dist } = area;
     const rad = min(w, h) / 4;
-    strokeWeight(2);
-    const n = map(dist, minDist, maxDist, 0.001, 4);
+    const c = colors[floor(random(colors.length))];
+    strokeWeight(3);
+    fill(c);
+    stroke(c);
+    const n = map(dist, minDist, maxDist, 0.01, 4);
     const s = map(dist, minDist, maxDist, -2, 2);
 
     wonkyCircle(x + w / 2, y + h / 2, rad * s, n);
   });
 
-  grain(4000);
+  grain(3000);
+
   save();
 }
 
@@ -65,7 +77,7 @@ function wonkyCircle(oX, oY, rad, n) {
     const radius = map(noise(xoff, yoff), 0, 1, rad / 2, rad);
     const x = radius * cos(i) * xMult;
     const y = radius * sin(i) * yMult;
-    vertex(x, y);
+    curveVertex(x, y);
   }
   endShape(CLOSE);
   pop();
