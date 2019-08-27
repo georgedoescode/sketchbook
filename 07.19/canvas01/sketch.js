@@ -1,7 +1,8 @@
 function setup() {
-  createCanvas(1000, 1000);
+  createCanvas(2000, 2000);
   noLoop();
-  pixelDensity(2);
+  // pixelDensity(2);
+  strokeWeight(2);
   noFill();
 }
 
@@ -12,39 +13,12 @@ function draw() {
     100,
     width - 200,
     height - 200,
-    750,
+    3500,
     0.015,
-    color("#DCA42C")
+    color(0, random(75, 255))
   );
-  canvasTexture(
-    100,
-    100,
-    width - 200,
-    height - 200,
-    750,
-    0.015,
-    color("#F0CD32")
-  );
-  canvasTexture(
-    100,
-    100,
-    width - 200,
-    height - 200,
-    250,
-    0.015,
-    color("#EBC52F")
-  );
-  canvasTexture(
-    100,
-    100,
-    width - 200,
-    height - 200,
-    125,
-    0.015,
-    color(4, 4, 16, 5)
-  );
-  // canvasTexture(0, 0, width, height, 2500, 0.015, color(4, 4, 16, 1));
-  grain(5000);
+
+  // grain(5000);
 }
 
 function mousePressed() {
@@ -105,13 +79,13 @@ class CanvasTexture {
     let yoff = 0;
     for (let i = 0; i < this.density; i++) {
       const xpos = random(this.w);
-      const offset = noise(yoff) * 10;
+      const offset = noise(yoff) * 40;
       wonkyLine(xpos, -offset, xpos, this.h + offset, this.roughness);
       yoff += 0.05;
     }
     for (let i = 0; i < this.density; i++) {
       const ypos = random(this.h);
-      const offset = noise(xoff) * 10;
+      const offset = noise(xoff) * 40;
       wonkyLine(-offset, ypos, this.w + offset, ypos, this.roughness);
       xoff += 0.05;
     }
@@ -126,7 +100,7 @@ function canvasTexture(
   h,
   density,
   roughness = 0.01,
-  stroke = color(0, 3),
+  stroke = color(0, 1),
   strokeWeight = 1
 ) {
   const canvas = new CanvasTexture(

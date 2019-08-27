@@ -7,10 +7,11 @@ let cols;
 let rows;
 
 function setup() {
-  createCanvas(500, 500);
+  createCanvas(1000, 1000);
   background(10);
-  frameRate(2);
-  // noLoop();
+  // frameRate(2);
+  noLoop();
+  pixelDensity(2);
 
   cols = floor(random(3, 15));
   rows = cols;
@@ -50,7 +51,7 @@ function draw() {
   gridAreas.forEach(area => {
     const { xPos: x, yPos: y, w, h, dist } = area;
     const rad = min(w, h) / 4;
-    strokeWeight(1);
+    strokeWeight(2);
     fill(10);
     stroke(252);
     const n = map(dist, minDist, maxDist, minInc, maxInc);
@@ -65,12 +66,12 @@ function draw() {
     }
 
     stroke(252);
-    strokeWeight(1);
+    strokeWeight(2);
 
     wonkyCircle(x + w / 2, y + h / 2, rad * s, n);
   });
 
-  grain(1000);
+  grain(4000);
 
   save(`frame${frameCount}.jpg`);
 }
